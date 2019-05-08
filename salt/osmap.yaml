@@ -15,18 +15,6 @@
 {% set oscodename = salt['grains.get']('oscodename') %}
 {% set os_family_lower =  salt['grains.get']('os_family')|lower %}
 
-Antergos:
-  salt_master: salt
-  salt_minion: salt
-  salt_syndic: salt
-  salt_cloud: salt
-  salt_api: salt
-  salt_ssh: salt
-  python_git: python2-gitpython
-  pygit2: python2-pygit2
-  libgit2: libgit2
-  pyinotify: python2-pyinotify
-
 Fedora:
   pygit2: python2-pygit2
 
