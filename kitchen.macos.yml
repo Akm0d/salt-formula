@@ -1,0 +1,16 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+driver:
+  name: exec
+
+provisioner:
+  sudo: true
+  salt_install: bootstrap
+  salt_bootstrap_options: -P stable latest
+  salt_bootstrap_url: "https://github.com/saltstack/salt-bootstrap\
+                       /releases/latest/download/bootstrap-salt.sh"
+  salt_call_command: /opt/salt/salt-call
+
+platforms:
+  - name: macos-13-latest

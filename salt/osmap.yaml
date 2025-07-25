@@ -1,37 +1,41 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
+---
 
-{% import_yaml "salt/ospyvermap.yaml" as ospyvermap %}
-{% set ospyver = salt['grains.filter_by'](ospyvermap, grain='os_family') or {} %}
-{% set py_ver_dir = salt['pillar.filter_by'](ospyver, pillar='salt:py_ver', default='py2') %}
-
-{% set osrelease = salt['grains.get']('osrelease') %}
-{% set salt_release = salt['pillar.get']('salt:release', 'latest') %}
-{% if salt_release.split('.')|length >= 3 %}
-{% set salt_release = 'archive/' ~ salt_release %}
-{% endif %}
-{% set os_lower =  salt['grains.get']('os')|lower %}
-{% set osmajorrelease = salt['grains.get']('osmajorrelease', osrelease)|string %}
-{% set oscodename = salt['grains.get']('oscodename') %}
-{% set os_family_lower =  salt['grains.get']('os_family')|lower %}
+# {%- set py_ver_repr = salt['pillar.get']('salt:py_ver', '') %}
+# yamllint disable rule:line-length
+# {%- set salt_repo = salt['pillar.get']('salt:repo', 'https://packages.broadcom.com/artifactory') %}
+# {%- set salt_repo_key_url = salt['pillar.get']('salt:repo_key_url', salt_repo ~ '/api/security/keypair/SaltProjectKey/public') %}
+# yamllint enable rule:line-length
 
 Fedora:
   pygit2: python2-pygit2
 
+Amazon:
+  pkgrepo_name: saltstack-amzn-repo
+  pkgrepo_humanname: SaltStack repo for Amazon Linux 2
+  pkgrepo: '{{ salt_repo }}/saltproject-rpm/'
+  key_url: '{{ salt_repo_key_url }}'
+
 Ubuntu:
-  pkgrepo: 'deb http://repo.saltstack.com/{{ py_ver_dir }}/{{ os_lower }}/{{ osrelease }}/amd64/{{ salt_release }} {{ oscodename }} main'
-  key_url: 'https://repo.saltstack.com/{{ py_ver_dir }}/{{ os_lower }}/{{ osrelease }}/amd64/{{ salt_release }}/SALTSTACK-GPG-KEY.pub'
+  pkgrepo: 'deb [signed-by=/etc/apt/keyrings/salt-archive-keyring.pgp arch=amd64]
+              {{ salt_repo }}/saltproject-deb stable main'
+  pkgrepo_keyring: '{{ salt_repo_key_url }}'
+  pkgrepo_keyring_hash:
+    sha256=36decef986477acb8ba2a1fc4041bcf9f22229ef6c939d0317c9e36a9d142b34
+  key_url: '{{ salt_repo_key_url }}'
   pygit2: python-pygit2
   gitfs:
     pygit2:
-      install_from_source: False
+      install_from_source: false
       git:
-        require_state: False
+        require_state: false
         install_from_package: Null
 
 Raspbian:
-  pkgrepo: 'deb http://repo.saltstack.com/{{ py_ver_dir }}/{{ os_family_lower }}/{{ osmajorrelease }}/armhf/{{ salt_release }} {{ oscodename }} main'
-  key_url: 'https://repo.saltstack.com/{{ py_ver_dir }}/{{ os_family_lower }}/{{ osmajorrelease }}/armhf/{{ salt_release }}/SALTSTACK-GPG-KEY.pub'
+  pkgrepo: 'deb [signed-by=/etc/apt/keyrings/salt-archive-keyring.pgp arch=armhf]
+              {{ salt_repo }}/saltproject-deb stable main'
+  pkgrepo_keyring: '{{ salt_repo_key_url }}'
 
 SmartOS:
   salt_master: salt
@@ -43,10 +47,38 @@ SmartOS:
   minion_service: 'salt:minion'
   master_service: 'salt:master'
   api_service: 'salt:api'
-  python_dulwich: 'py27-dulwich'
+  python_dulwich: '{{ py_ver_repr or "py27" }}{{ "-dulwich" }}'
   gitfs:
     dulwich:
-      install_from_source: False
+      install_from_source: false
   config_path: /opt/local/etc/salt
   master:
     gitfs_provider: dulwich
+
+MacOS:
+  minion_service: com.saltstack.salt.minion
+  master_service: com.saltstack.salt.master
+  salt_master_macos_plist_hash:
+    97666226c14ec2fd755edb5d909688540a36408dfe9fb34a1c15676020376ace
+  salt_minion_macos_plist_hash:
+    17d9556b5742a785eaddaec117132be99af138cab7157dbacbda2058538b6e69
+
+FreeBSD:
+  salt_master: py39-salt
+  salt_minion: py39-salt
+  salt_syndic: py39-salt
+  salt_cloud: py39-salt
+  salt_api: py39-salt
+  salt_ssh: py39-salt
+  python_git: py39-gitpython
+  pygit2: py39-pygit2
+  python_dulwich: py39-dulwich
+
+# If `osfingermap.yaml` is introduced in the future, perhaps better to move to there,
+# since this is probably specific to `OpenBSD-6`
+OpenBSD:
+  python_git: py3-GitPython
+  python_dulwich: py3-dulwich
+
+Windows:
+  parallel: false   # not supported on windows/cygwin
