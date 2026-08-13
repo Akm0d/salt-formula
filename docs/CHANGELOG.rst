@@ -2,6 +2,41 @@
 Changelog
 =========
 
+`1.13.4 <https://github.com/saltstack-formulas/salt-formula/compare/v1.13.3...v1.13.4>`_ (2026-06-27)
+---------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **minion:** correct master_failback config option name (\ `231aa55 <https://github.com/saltstack-formulas/salt-formula/commit/231aa55c9813d0e2e4a5a940f9779a625c545b3e>`_\ )
+
+`1.13.3 <https://github.com/saltstack-formulas/salt-formula/compare/v1.13.2...v1.13.3>`_ (2026-06-27)
+---------------------------------------------------------------------------------------------------------
+
+Testing
+^^^^^^^
+
+
+* fix failing kitchen suites by pinning salt to the image version (\ `5c894b9 <https://github.com/saltstack-formulas/salt-formula/commit/5c894b9753edcde371f0a8cc18ea3433cb28fb3c>`_\ )
+* ignore the pinned salt version in the _mapdata reference check (\ `f418e6d <https://github.com/saltstack-formulas/salt-formula/commit/f418e6d8d8b5301b01f9d49ec63bd6e6ba8a25cc>`_\ )
+
+Maintenance
+^^^^^^^^^^^
+
+
+* **copier:** update template https://github.com/dafyddj/copier-ssf-ci to v2.10.3 (\ `c7ad2d9 <https://github.com/saltstack-formulas/salt-formula/commit/c7ad2d9311bec4d87038ba11614450d7fe4cf411>`_\ )
+* **copier:** update template https://github.com/dafyddj/copier-ssf-ci to v2.10.6 (\ `dc1ae1f <https://github.com/saltstack-formulas/salt-formula/commit/dc1ae1f2b854a06df51da7ae064f7d7c41ab1512>`_\ )
+
+`1.13.2 <https://github.com/saltstack-formulas/salt-formula/compare/v1.13.1...v1.13.2>`_ (2025-10-13)
+---------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **suse:** update pygit2 package name (\ `21c1492 <https://github.com/saltstack-formulas/salt-formula/commit/21c1492686fe4b7d588995ad9a8110d8986614e4>`_\ )
+
 `1.13.1 <https://github.com/saltstack-formulas/salt-formula/compare/v1.13.0...v1.13.1>`_ (2025-06-11)
 ---------------------------------------------------------------------------------------------------------
 
